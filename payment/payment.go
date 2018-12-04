@@ -41,13 +41,14 @@ type Order struct {
 	OutTradeNo string `xml:"out_trade_no"` // 商户订单号
 
 	// 选填 ...
-	IP        string    `xml:"spbill_create_ip,omitempty"` // 终端IP
-	NoCredit  bool      `xml:"-"`                          // 上传此参数 no_credit 可限制用户不能使用信用卡支付
-	StartedAt time.Time `xml:"-"`                          // 交易起始时间 格式为yyyyMMddHHmmss
-	ExpiredAt time.Time `xml:"-"`                          // 交易结束时间 订单失效时间 格式为yyyyMMddHHmmss
-	Tag       string    `xml:"goods_tag,omitempty"`        // 订单优惠标记，使用代金券或立减优惠功能时需要的参数，
-	Detail    string    `xml:"detail,omitempty"`           // 商品详情
-	Attach    string    `xml:"attach,omitempty"`           // 附加数据
+	DeviceInfo string    `xml:"device_info"`                //设备号
+	IP         string    `xml:"spbill_create_ip,omitempty"` // 终端IP
+	NoCredit   bool      `xml:"-"`                          // 上传此参数 no_credit 可限制用户不能使用信用卡支付
+	StartedAt  time.Time `xml:"-"`                          // 交易起始时间 格式为yyyyMMddHHmmss
+	ExpiredAt  time.Time `xml:"-"`                          // 交易结束时间 订单失效时间 格式为yyyyMMddHHmmss
+	Tag        string    `xml:"goods_tag,omitempty"`        // 订单优惠标记，使用代金券或立减优惠功能时需要的参数，
+	Detail     string    `xml:"detail,omitempty"`           // 商品详情
+	Attach     string    `xml:"attach,omitempty"`           // 附加数据
 }
 
 // 下单所需所有数据
@@ -122,6 +123,10 @@ func (o *Order) prepare(key string) (order, error) {
 	if o.NoCredit {
 		od.NoCredit = "no_credit"
 		signData["limit_pay"] = od.NoCredit
+	}
+
+	if o.DeviceInfo != "" {
+		signData["device_info"] = o.DeviceInfo
 	}
 
 	sign, err := util.SignByMD5(signData, key)
@@ -231,6 +236,7 @@ func (o Order) Unify(key string) (pres PaidResponse, err error) {
 type PaidNotify struct {
 	AppID         string  `xml:"appid"`               // 小程序ID
 	MchID         string  `xml:"mch_id"`              // 商户号
+	DeviceInfo    string  `xml:"device_info"`         //设备号
 	TotalFee      int     `xml:"total_fee"`           // 标价金额
 	NonceStr      string  `xml:"nonce_str"`           // 随机字符串
 	Sign          string  `xml:"sign"`                // 签名
