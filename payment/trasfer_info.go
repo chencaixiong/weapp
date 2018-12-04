@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"time"
 
-	"github.com/medivhzhan/weapp/util"
+	"github.com/chencaixiong/weapp/util"
 )
 
 const transferInfoAPI = "/mmpaymkttransfers/gettransferinfo"

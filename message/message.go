@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/medivhzhan/weapp"
-	"github.com/medivhzhan/weapp/util"
+	"github.com/chencaixiong/weapp"
+	"github.com/chencaixiong/weapp/util"
 )
 
 const (
